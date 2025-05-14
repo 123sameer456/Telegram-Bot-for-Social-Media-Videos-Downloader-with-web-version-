@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Downloader</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #222; color: white; padding: 20px; }
+        input { width: 60%; padding: 10px; border-radius: 5px; margin: 10px; }
+        button { background-color: #28a745; color: white; border: none; padding: 10px 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Enter Video URL to Download</h1>
+    <input type="text" id="videoUrl" placeholder="Enter video link here..." />
+    <button onclick="downloadVideo()">Download</button>
+    <p id="message"></p>
+
+    <script>
+        function downloadVideo() {
+            const url = document.getElementById("videoUrl").value;
+            fetch("/download", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url: url })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("message").innerText = data.message || data.error;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
